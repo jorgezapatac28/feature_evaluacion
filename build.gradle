@@ -39,6 +39,18 @@ dependencies {
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.32'
 }
 
+
+compileJava.dependsOn(clean)
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+tasks.register('karateDebug', JavaExec) {
+    classpath = sourceSets.test.runtimeClasspath
+    main = 'com.intuit.karate.cli.Main'
+}
+
 java {
     // Apply a specific Java toolchain to ease working on different environments.
     toolchain {
@@ -46,6 +58,19 @@ java {
     }
 }
 
+
+sourceSets {
+    test {
+        java {
+            srcDir file('src/test/java')
+            exclude '**/*UiRunner*.java'
+        }
+        resources {
+            srcDir file('src/test/java')
+            exclude '**/*.java'
+        }
+    }
+}
 application {
     // Define the main class for the application.
     mainClass = 'com.marvel.api.App'
@@ -53,6 +78,14 @@ application {
 
 test {
     useJUnitPlatform()
+    systemProperties System.getProperties()
+    systemProperty "file.encoding", "utf-8"
+    // pull karate options into the runtime
+    systemProperty "karate.options", System.properties.getProperty("karate.options")
+    // pull karate env into the runtime
+    systemProperty "karate.env", System.properties.getProperty("karate.env")
+    // ensure tests are always run
+    outputs.upToDateWhen { false }
 }
 
 task stage(dependsOn: ['build', 'clean'])
