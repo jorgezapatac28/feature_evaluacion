@@ -5,6 +5,7 @@
  * For more details on building Java & JVM projects, please refer to https://docs.gradle.org/8.12.1/userguide/building_java_projects.html in the Gradle documentation.
  */
 
+
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'application'
@@ -15,7 +16,6 @@ plugins {
 
 group = 'com.marvel.api'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '17'
 
 repositories {
     // Use Maven Central for resolving dependencies.
@@ -25,6 +25,7 @@ repositories {
 dependencies {
     // Use JUnit test framework.
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
+
 
     // This dependency is used by the application.
     implementation 'com.google.guava:guava:33.2.0-jre'
@@ -37,6 +38,9 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.32'
     testImplementation 'org.projectlombok:lombok:1.18.32'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.32'
+
+    testImplementation 'com.intuit.karate:karate-junit5:1.4.1'
+
 }
 
 
@@ -96,3 +100,4 @@ bootRun {
     // Specify the main class of the application.
     mainClass = 'com.marvel.api.App'
 }
+gradle.startParameter.continueOnFailure = true
